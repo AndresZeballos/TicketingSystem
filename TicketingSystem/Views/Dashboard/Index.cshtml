@@ -1,0 +1,69 @@
+﻿@model IEnumerable<TicketingSystem.Models.Ticket>
+
+@{
+    ViewBag.Title = "iTicket Dashboard";
+}
+
+<h2>iTicket Dashboard</h2>
+
+<form class="form-inline">
+    <div class="form-group">
+        Search for iTickets: 
+    </div>
+    <div class="form-group">
+        <input id="searchBox" class="form-control text-box single-line" onkeyup="filterTickets()" placeholder="Search for iTickes.." title="Type something to search for" type="text">
+    </div>
+    <div class="form-group">
+        @Html.EnumDropDownListFor(model => Model.First().Status, htmlAttributes: new { @class = "form-control", @id = "statusFilter", @onchange = "filterTickets()" })
+    </div>
+    <div class="form-group pull-right">
+        @Html.ActionLink("Create New iTicket", "CreateTicket")
+    </div>
+</form>
+
+<p>
+</p>
+<table class="table" id="iTicketsTable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Body)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class="@(item.Status)" style="@(item.Status == TicketingSystem.Models.Status.Closed ? "display: none":" " )">
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditTicket", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "DeleteTicket", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts{
+    @Scripts.Render("~/bundles/home")
+}

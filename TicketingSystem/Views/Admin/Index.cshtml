@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TicketingSystem.Models.User>
+
+@{
+    ViewBag.Title = "Admin";
+}
+
+<h1>Admin</h1>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsEnable)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsEnable)
+        </td>
+        <td>
+            @if (item.IsEnable)
+            {
+                using (Html.BeginForm("DisableUser", "Admin", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(modelItem => item.Id, new { Name = "Id" })
+
+                    <input type="submit" value="Disable" class="btn btn-default" />
+                }
+            }
+            else
+            {
+                using (Html.BeginForm("EnableUser", "Admin", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(modelItem => item.Id, new { Name = "Id" })
+
+                    <input type="submit" value="Enable" class="btn btn-default" />
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>
